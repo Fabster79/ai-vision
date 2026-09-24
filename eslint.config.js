@@ -5,12 +5,17 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
+const typedFiles = ['**/*.{ts,tsx}'];
+
 export default tseslint.config(
   { ignores: ['dist', 'playwright-report', 'test-results'] },
   js.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
+  ...tseslint.configs.recommendedTypeChecked.map((config) => ({
+    ...config,
+    files: typedFiles,
+  })),
   {
-    files: ['**/*.{ts,tsx}'],
+    files: typedFiles,
     languageOptions: {
       ecmaVersion: 2022,
       globals: globals.browser,

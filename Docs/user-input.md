@@ -19,3 +19,7 @@ Die Abarbeitung beginnt entsprechend dem Plan ohne Big-Bang-Implementierung mit 
 > Ganz kleines Update noch, projektname **PocketVision**
 
 Der verbindliche Projekt- und Produktname lautet ab sofort **PocketVision**. Historische Dateinamen und wörtlich archivierte frühere Eingaben bleiben zur Nachvollziehbarkeit unverändert.
+
+## CI-Fehlerbericht vom 24. September 2026
+
+Beim Merge in den Main-Branch meldete GitHub Actions einen Fehler für die typabhängige ESLint-Regel `@typescript-eslint/await-thenable`, während `eslint.config.js` geprüft wurde. Gewünschte Korrektur: Inline-Kommentare berücksichtigen und die ESLint-Konfiguration so eingrenzen, dass Regeln mit Typinformationen ausschließlich auf TypeScript-Dateien angewendet werden.
