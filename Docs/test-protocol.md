@@ -6,7 +6,7 @@
 
 - ESLint über den vollständigen Quellbestand
 - TypeScript-Projektbuild im strikten Modus
-- Vitest-Komponententests für Status und Datenschutztext
+- Vitest-Komponententests für Status und Datenschutztext; die Suche ist auf `src/` begrenzt
 - Vite-Produktionsbuild
 - Playwright-Smoke-Test auf emuliertem Android Chrome, iOS Safari und Desktop Chrome
 - Prüfung auf horizontalen Overflow in den Playwright-Zielgrößen
