@@ -1,0 +1,29 @@
+# Archivierter Projektauftrag
+
+## Eingang
+
+- Datum: 20. September 2026
+- Quelle: Nutzerauftrag in Codex
+- Referenz: [`ai-vision-object-detection-codex-plan.md`](./ai-vision-object-detection-codex-plan.md)
+
+## Auftrag (Originaltext)
+
+> Bitte lies die ai-vision-object-detection-codex-plan.md und fange an mit der Abarbeitung. Instruktionen und input bitte unter einem Verzeichnis "Docs" archivieren.
+
+## Umsetzungsentscheidung
+
+Die Abarbeitung beginnt entsprechend dem Plan ohne Big-Bang-Implementierung mit **M0 – Technische Basis und Entscheidungsprotokoll**. Projektbezogene Anweisungen, Architekturentscheidungen und weitere Eingangsdokumente werden im Verzeichnis `Docs/` geführt.
+
+## Ergänzung vom 24. September 2026
+
+> Ganz kleines Update noch, projektname **PocketVision**
+
+Der verbindliche Projekt- und Produktname lautet ab sofort **PocketVision**. Historische Dateinamen und wörtlich archivierte frühere Eingaben bleiben zur Nachvollziehbarkeit unverändert.
+
+## CI-Fehlerbericht vom 24. September 2026
+
+Beim Merge in den Main-Branch meldete GitHub Actions einen Fehler für die typabhängige ESLint-Regel `@typescript-eslint/await-thenable`, während `eslint.config.js` geprüft wurde. Gewünschte Korrektur: Inline-Kommentare berücksichtigen und die ESLint-Konfiguration so eingrenzen, dass Regeln mit Typinformationen ausschließlich auf TypeScript-Dateien angewendet werden.
+
+## Vitest-Fehlerbericht vom 24. September 2026
+
+GitHub Actions führte beim Befehl `npm run test` neben den Unit Tests versehentlich auch `e2e/app.spec.ts` mit Vitest aus. Dadurch wurde Playwrights `test()` außerhalb des Playwright-Test-Runners aufgerufen. Gewünschte Korrektur: Unit- und E2E-Test-Suites in der Runner-Konfiguration eindeutig voneinander trennen.
