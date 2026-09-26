@@ -1,11 +1,16 @@
 import { LockClosedIcon } from '@radix-ui/react-icons';
+import { useState } from 'react';
 
 import { CameraControls } from '../components/camera/CameraControls';
 import { CameraStage } from '../components/camera/CameraStage';
+import { DetectionPanel } from '../components/detection/DetectionPanel';
 import { useCamera } from '../hooks/useCamera';
+import { useDetectionEngine } from '../hooks/useDetectionEngine';
 
 export function App() {
   const camera = useCamera();
+  const detection = useDetectionEngine();
+  const [video, setVideo] = useState<HTMLVideoElement | null>(null);
 
   return (
     <main className="app-shell">
@@ -50,6 +55,7 @@ export function App() {
             status={camera.status}
             message={camera.message}
             facingMode={camera.facingMode}
+            onVideoElement={setVideo}
           />
           <CameraControls
             status={camera.status}
@@ -63,6 +69,16 @@ export function App() {
           </p>
         </div>
       </section>
+
+      <DetectionPanel
+        status={detection.status}
+        message={detection.message}
+        cameraActive={camera.status === 'active'}
+        isDetecting={detection.isDetecting}
+        detections={detection.detections}
+        onAnalyze={() => void detection.analyze(video)}
+        onRetry={() => void detection.retry()}
+      />
 
       <section className="camera-facts" aria-label="Hinweise zur Kamera">
         <article>
@@ -88,7 +104,7 @@ export function App() {
         </article>
       </section>
 
-      <footer>Objekterkennung folgt im nächsten Meilenstein.</footer>
+      <footer>Objekterkennung lokal auf deinem Gerät – ohne Upload.</footer>
     </main>
   );
 }

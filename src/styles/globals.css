@@ -107,6 +107,84 @@ button {
 .camera-workspace {
   padding-top: clamp(42px, 8vh, 86px);
 }
+.detection-panel {
+  margin-top: 28px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.025);
+}
+.detection-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+.detection-heading h2 {
+  margin: 8px 0 0;
+  font-size: clamp(22px, 6vw, 30px);
+}
+.ai-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #9db1a7;
+  font-size: 12px;
+}
+.ai-status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ddad57;
+}
+.ai-status--ready i {
+  background: #55e09c;
+  box-shadow: 0 0 8px #55e09c;
+}
+.ai-status--error i {
+  background: #ff987f;
+}
+.analyze-action,
+.secondary-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid rgba(154, 248, 201, 0.45);
+  border-radius: 12px;
+  color: #092016;
+  background: var(--mint);
+  font-weight: 700;
+  cursor: pointer;
+}
+.secondary-action {
+  color: var(--mint);
+  background: transparent;
+}
+.analyze-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+.empty-detections {
+  margin: 20px 0 0;
+  color: var(--muted);
+}
+.detection-list {
+  display: grid;
+  gap: 8px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.detection-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 13px 14px;
+  border-radius: 12px;
+  background: rgba(154, 248, 201, 0.06);
+}
 .eyebrow {
   display: flex;
   align-items: center;
