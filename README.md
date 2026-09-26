@@ -61,9 +61,21 @@ Automatisierte Browser-Emulation ergänzt die Tests auf echten Geräten, ersetzt
 - **M3 – Overlay und Ergebnisliste:** umgesetzt
 - **M4 – Farb-Analyse:** umgesetzt
 - **M5 – Kontinuierliche Erkennung und Performance:** umgesetzt
-- M6: geplant
+- **M6 – Qualitätsabsicherung, PWA und Veröffentlichung:** umgesetzt
 
 Der vollständige, verbindliche Ablauf steht im [Codex-Projektplan](Docs/ai-vision-object-detection-codex-plan.md).
+
+## PWA und Veröffentlichung
+
+Der Produktionsbuild erzeugt einen Service Worker, der die gebaute Oberfläche vorab und die
+Vision-Runtime inklusive Modell/WASM nach dem ersten Abruf zwischenspeichert. Damit bleibt die
+Oberfläche bei kurzen Verbindungsunterbrechungen verfügbar. Für die erstmalige Erkennung und das
+Aktualisieren des Caches ist eine Verbindung erforderlich.
+
+Die Veröffentlichung auf GitHub Pages ist über GitHub Actions vorbereitet. Die einmalige
+Einrichtung, das Release-Gate und Hinweise zur Fehlerbehebung beschreibt die
+[GitHub-Pages-Anleitung](Docs/github-pages.md). Das vollständige manuelle Mobile-, Browser- und
+Barrierefreiheits-Gate steht im [Testprotokoll](Docs/test-protocol.md).
 
 ## Live-Erkennung und Leistungsprofil
 
