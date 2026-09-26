@@ -5,6 +5,7 @@ import { App } from './App';
 const stop = vi.fn();
 const getUserMedia = vi.fn();
 const enumerateDevices = vi.fn();
+const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
 function cameraStream(): MediaStream {
   return {
@@ -14,6 +15,7 @@ function cameraStream(): MediaStream {
 }
 
 beforeEach(() => {
+  consoleError.mockClear();
   stop.mockReset();
   getUserMedia.mockReset();
   enumerateDevices.mockReset().mockResolvedValue([
@@ -37,6 +39,16 @@ beforeEach(() => {
 });
 
 describe('App', () => {
+  it('reports model loading failures with their cause in the browser console', async () => {
+    render(<App />);
+
+    await screen.findByText(/KI-Modell konnte nicht geladen werden/i);
+    expect(consoleError).toHaveBeenCalledWith(
+      '[PocketVision] KI-Modell konnte nicht geladen werden.',
+      expect.anything(),
+    );
+  });
+
   it('communicates privacy before camera access and only starts after a tap', async () => {
     getUserMedia.mockResolvedValue(cameraStream());
     render(<App />);

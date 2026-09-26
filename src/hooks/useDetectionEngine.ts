@@ -30,7 +30,8 @@ export function useDetectionEngine(factory: DetectionEngineFactory = createDefau
       await engineRef.current.load();
       setStatus('ready');
       setMessage('KI bereit');
-    } catch {
+    } catch (error) {
+      console.error('[PocketVision] KI-Modell konnte nicht geladen werden.', error);
       setStatus('error');
       setMessage('KI-Modell konnte nicht geladen werden. Die Kamera bleibt weiterhin nutzbar.');
     }
@@ -47,7 +48,8 @@ export function useDetectionEngine(factory: DetectionEngineFactory = createDefau
       try {
         const nextDetections = await engineRef.current.detect(video, performance.now());
         setDetections(nextDetections);
-      } catch {
+      } catch (error) {
+        console.error('[PocketVision] Einzelanalyse fehlgeschlagen.', error);
         setStatus('error');
         setMessage('Die Einzelanalyse ist fehlgeschlagen. Bitte versuche es erneut.');
       } finally {
