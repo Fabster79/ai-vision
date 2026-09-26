@@ -1,5 +1,3 @@
-import { FilesetResolver, ObjectDetector } from '@mediapipe/tasks-vision';
-
 import { defaultDetectionConfig, type DetectionEngineConfig } from './detection-engine';
 import type { Detection, DetectionEngine } from './detection-types';
 
@@ -11,6 +9,13 @@ type RawDetection = {
 type MediaPipeDetector = {
   detectForVideo(video: HTMLVideoElement, timestampMs: number): { detections?: RawDetection[] };
   close(): void;
+};
+
+type MediaPipeModule = {
+  FilesetResolver: { forVisionTasks(path: string): Promise<unknown> };
+  ObjectDetector: {
+    createFromOptions(fileset: unknown, options: Record<string, unknown>): Promise<unknown>;
+  };
 };
 
 const emptyColor: Detection['color'] = {
@@ -87,8 +92,13 @@ export class MediapipeDetectionEngine implements DetectionEngine {
   }
 
   private async createDetector() {
-    const fileset = await FilesetResolver.forVisionTasks(this.config.wasmAssetPath);
-    this.detector = (await ObjectDetector.createFromOptions(fileset, {
+    // The runtime bundle is a local public asset. Keeping this import dynamic lets the
+    // camera UI start even when vision assets have not been provisioned yet.
+    const vision = (await import(
+      /* @vite-ignore */ this.config.moduleAssetPath
+    )) as MediaPipeModule;
+    const fileset = await vision.FilesetResolver.forVisionTasks(this.config.wasmAssetPath);
+    this.detector = (await vision.ObjectDetector.createFromOptions(fileset, {
       baseOptions: { modelAssetPath: this.config.modelAssetPath },
       runningMode: 'VIDEO',
       scoreThreshold: this.config.scoreThreshold,

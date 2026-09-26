@@ -2,13 +2,6 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { App } from './App';
 
-vi.mock('@mediapipe/tasks-vision', () => ({
-  FilesetResolver: {
-    forVisionTasks: vi.fn().mockRejectedValue(new Error('MediaPipe test load failure')),
-  },
-  ObjectDetector: { createFromOptions: vi.fn() },
-}));
-
 const stop = vi.fn();
 const getUserMedia = vi.fn();
 const enumerateDevices = vi.fn();
