@@ -1,12 +1,12 @@
-import { CameraIcon, LockClosedIcon } from '@radix-ui/react-icons';
+import { LockClosedIcon } from '@radix-ui/react-icons';
 
-const roadmap = [
-  { label: 'Technische Basis', state: 'Bereit' },
-  { label: 'Kamera-Fundament', state: 'Als Nächstes' },
-  { label: 'Objekterkennung', state: 'Geplant' },
-];
+import { CameraControls } from '../components/camera/CameraControls';
+import { CameraStage } from '../components/camera/CameraStage';
+import { useCamera } from '../hooks/useCamera';
 
 export function App() {
+  const camera = useCamera();
+
   return (
     <main className="app-shell">
       <header className="app-header">
@@ -21,69 +21,74 @@ export function App() {
         </span>
       </header>
 
-      <section className="hero" id="top">
-        <div className="eyebrow">
-          <span /> Mobile Objekterkennung
-        </div>
-        <h1>
-          Sieh, was deine
-          <br />
-          <em>Kamera sieht.</em>
-        </h1>
-        <p className="intro">
-          Objekte und Farben direkt im Browser erkennen – schnell, verständlich und ohne Upload.
-        </p>
-
-        <div className="camera-preview" aria-label="Kamera-Vorschau noch nicht aktiv">
-          <div className="viewfinder" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-            <i />
+      <section className="camera-workspace" id="top">
+        <div className="camera-copy">
+          <div className="eyebrow">
+            <span /> Kamera-Fundament
           </div>
-          <div className="preview-center">
-            <span className="camera-icon">
-              <CameraIcon />
-            </span>
-            <strong>Kamera bereit</strong>
-            <small>Im nächsten Schritt aktivierbar</small>
+          <h1>
+            Deine Sicht.
+            <br />
+            <em>Deine Kamera.</em>
+          </h1>
+          <p className="intro">
+            Starte die Kamera bewusst und wechsle bei Bedarf die Perspektive. Das Bild bleibt dabei
+            vollständig auf deinem Gerät.
+          </p>
+          <div className="camera-status" data-status={camera.status}>
+            <span aria-hidden="true" />
+            <div>
+              <b>{camera.status === 'active' ? 'Kamera aktiv' : 'Kamerastatus'}</b>
+              <p>{camera.message}</p>
+            </div>
           </div>
-          <div className="preview-grid" aria-hidden="true" />
         </div>
 
-        <button className="primary-action" type="button" disabled>
-          <CameraIcon /> Kamera starten <span aria-hidden="true">→</span>
-        </button>
-        <p className="privacy-note">
-          <LockClosedIcon /> Bilder bleiben auf diesem Gerät.
-        </p>
+        <div className="camera-panel">
+          <CameraStage
+            stream={camera.stream}
+            status={camera.status}
+            message={camera.message}
+            facingMode={camera.facingMode}
+          />
+          <CameraControls
+            status={camera.status}
+            canSwitch={camera.canSwitch}
+            onStart={() => void camera.start()}
+            onStop={() => camera.stop('Kamera wurde gestoppt.')}
+            onSwitch={() => void camera.switchCamera()}
+          />
+          <p className="privacy-note">
+            <LockClosedIcon /> Kameraaufnahmen werden weder hochgeladen noch gespeichert.
+          </p>
+        </div>
       </section>
 
-      <section className="roadmap" aria-labelledby="roadmap-title">
-        <div className="section-heading">
+      <section className="camera-facts" aria-label="Hinweise zur Kamera">
+        <article>
+          <span>01</span>
           <div>
-            <span>Projektstatus</span>
-            <h2 id="roadmap-title">Unser Weg zur Live-Erkennung</h2>
+            <h2>Du entscheidest</h2>
+            <p>Die Kamera startet erst nach deinem Tippen und kann jederzeit beendet werden.</p>
           </div>
-          <b>1 / 3</b>
-        </div>
-        <div className="roadmap-list">
-          {roadmap.map((item, index) => (
-            <article className={index === 0 ? 'active' : ''} key={item.label}>
-              <span className="step-number">0{index + 1}</span>
-              <div>
-                <h3>{item.label}</h3>
-                <p>{item.state}</p>
-              </div>
-              <span className="step-state" aria-label={item.state}>
-                {index === 0 ? '✓' : '·'}
-              </span>
-            </article>
-          ))}
-        </div>
+        </article>
+        <article>
+          <span>02</span>
+          <div>
+            <h2>Automatisch sicher</h2>
+            <p>Beim Verlassen oder Ausblenden der Seite wird der laufende Stream beendet.</p>
+          </div>
+        </article>
+        <article>
+          <span>03</span>
+          <div>
+            <h2>Mobil gedacht</h2>
+            <p>Rückkamera zuerst, große Touch-Ziele und Platz für die Safe Area.</p>
+          </div>
+        </article>
       </section>
 
-      <footer>Entwickelt für moderne mobile Browser.</footer>
+      <footer>Objekterkennung folgt im nächsten Meilenstein.</footer>
     </main>
   );
 }
