@@ -1,5 +1,6 @@
 import { defaultDetectionConfig, type DetectionEngineConfig } from './detection-engine';
 import type { Detection, DetectionEngine } from './detection-types';
+import { analyzeDetectionColors } from './color-analysis';
 
 type RawDetection = {
   boundingBox?: { originX?: number; originY?: number; width?: number; height?: number };
@@ -70,6 +71,7 @@ export class MediapipeDetectionEngine implements DetectionEngine {
   private readonly config: DetectionEngineConfig;
   private detector: MediaPipeDetector | null = null;
   private loading: Promise<void> | null = null;
+  private frameCanvas: HTMLCanvasElement | null = null;
 
   constructor(config: Partial<DetectionEngineConfig> = {}) {
     this.config = { ...defaultDetectionConfig, ...config };
@@ -110,12 +112,24 @@ export class MediapipeDetectionEngine implements DetectionEngine {
     await this.load();
     if (!this.detector) throw new Error('Objekterkennung ist nicht bereit.');
     const result = this.detector.detectForVideo(video, timestampMs);
-    return normalizeDetections(result.detections ?? [], this.config);
+    const detections = normalizeDetections(result.detections ?? [], this.config);
+    const width = video.videoWidth;
+    const height = video.videoHeight;
+    if (!width || !height || detections.length === 0) return detections;
+
+    this.frameCanvas ??= document.createElement('canvas');
+    this.frameCanvas.width = width;
+    this.frameCanvas.height = height;
+    const context = this.frameCanvas.getContext('2d', { willReadFrequently: true });
+    if (!context) return detections;
+    context.drawImage(video, 0, 0, width, height);
+    return analyzeDetectionColors(context, detections, width, height);
   }
 
   dispose() {
     this.detector?.close();
     this.detector = null;
     this.loading = null;
+    this.frameCanvas = null;
   }
 }

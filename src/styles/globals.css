@@ -210,6 +210,30 @@ button {
   border-radius: 12px;
   background: rgba(154, 248, 201, 0.06);
 }
+.detection-color {
+  grid-column: 2 / -1;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 3px;
+}
+.detection-color > span:last-child {
+  min-width: 0;
+}
+.detection-color b {
+  display: block;
+  color: #bed4c8;
+  font-size: 12px;
+  font-weight: 600;
+}
+.color-swatch {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  border: 2px solid rgba(255, 255, 255, 0.72);
+  border-radius: 9px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+}
 .detection-rank {
   display: grid;
   place-items: center;

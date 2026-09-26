@@ -1,6 +1,6 @@
 # PocketVision
 
-Mobile-first Webanwendung für lokale Objekt- und Farberkennung über die Gerätekamera. Das **M1-Kamera-Fundament** ist umgesetzt; Objekterkennung folgt im nächsten Meilenstein.
+Mobile-first Webanwendung für lokale Objekt- und Farberkennung über die Gerätekamera. Objektboxen und eine robuste Schätzung der Hauptfarbe werden vollständig lokal ermittelt.
 
 ## Datenschutz
 
@@ -57,7 +57,9 @@ Automatisierte Browser-Emulation ergänzt die Tests auf echten Geräten, ersetzt
 
 - **M0 – Technische Basis:** umgesetzt
 - **M1 – Kamera-Fundament:** umgesetzt
-- **M2 – Objekterkennung:** als Nächstes
-- M3–M6: geplant
+- **M2 – Objekterkennung:** umgesetzt
+- **M3 – Overlay und Ergebnisliste:** umgesetzt
+- **M4 – Farb-Analyse:** umgesetzt
+- M5–M6: geplant
 
 Der vollständige, verbindliche Ablauf steht im [Codex-Projektplan](Docs/ai-vision-object-detection-codex-plan.md).
