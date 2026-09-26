@@ -8,7 +8,7 @@ type RawDetection = {
 };
 
 type MediaPipeDetector = {
-  detectForVideo(video: HTMLVideoElement, timestampMs: number): { detections?: RawDetection[] };
+  detectForVideo(source: CanvasImageSource, timestampMs: number): { detections?: RawDetection[] };
   close(): void;
 };
 
@@ -72,6 +72,7 @@ export class MediapipeDetectionEngine implements DetectionEngine {
   private detector: MediaPipeDetector | null = null;
   private loading: Promise<void> | null = null;
   private frameCanvas: HTMLCanvasElement | null = null;
+  private inferenceCanvas: HTMLCanvasElement | null = null;
 
   constructor(config: Partial<DetectionEngineConfig> = {}) {
     this.config = { ...defaultDetectionConfig, ...config };
@@ -111,10 +112,41 @@ export class MediapipeDetectionEngine implements DetectionEngine {
   async detect(video: HTMLVideoElement, timestampMs: number): Promise<Detection[]> {
     await this.load();
     if (!this.detector) throw new Error('Objekterkennung ist nicht bereit.');
-    const result = this.detector.detectForVideo(video, timestampMs);
-    const detections = normalizeDetections(result.detections ?? [], this.config);
     const width = video.videoWidth;
     const height = video.videoHeight;
+    let source: CanvasImageSource = video;
+    let scale = 1;
+    const useReducedFrame =
+      typeof window !== 'undefined' && window.matchMedia('(max-width: 759px)').matches;
+    if (useReducedFrame && Math.max(width, height) > this.config.mobileInferenceMaxDimension) {
+      scale = this.config.mobileInferenceMaxDimension / Math.max(width, height);
+      this.inferenceCanvas ??= document.createElement('canvas');
+      this.inferenceCanvas.width = Math.round(width * scale);
+      this.inferenceCanvas.height = Math.round(height * scale);
+      const inferenceContext = this.inferenceCanvas.getContext('2d');
+      inferenceContext?.drawImage(
+        video,
+        0,
+        0,
+        this.inferenceCanvas.width,
+        this.inferenceCanvas.height,
+      );
+      if (inferenceContext) source = this.inferenceCanvas;
+    }
+    const result = this.detector.detectForVideo(source, timestampMs);
+    const detections = normalizeDetections(result.detections ?? [], this.config).map((detection) =>
+      scale === 1
+        ? detection
+        : {
+            ...detection,
+            boundingBox: {
+              x: detection.boundingBox.x / scale,
+              y: detection.boundingBox.y / scale,
+              width: detection.boundingBox.width / scale,
+              height: detection.boundingBox.height / scale,
+            },
+          },
+    );
     if (!width || !height || detections.length === 0) return detections;
 
     this.frameCanvas ??= document.createElement('canvas');
@@ -131,5 +163,6 @@ export class MediapipeDetectionEngine implements DetectionEngine {
     this.detector = null;
     this.loading = null;
     this.frameCanvas = null;
+    this.inferenceCanvas = null;
   }
 }

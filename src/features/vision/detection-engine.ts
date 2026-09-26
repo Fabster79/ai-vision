@@ -7,6 +7,7 @@ export type DetectionEngineConfig = {
   moduleAssetPath: string;
   modelAssetPath: string;
   wasmAssetPath: string;
+  mobileInferenceMaxDimension: number;
 };
 
 export const defaultDetectionConfig: DetectionEngineConfig = {
@@ -20,6 +21,7 @@ export const defaultDetectionConfig: DetectionEngineConfig = {
   modelAssetPath:
     'https://storage.googleapis.com/mediapipe-models/object_detector/efficientdet_lite0/int8/1/efficientdet_lite0.tflite',
   wasmAssetPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22-rc.20250304/wasm',
+  mobileInferenceMaxDimension: 640,
 };
 
 export type DetectionEngineFactory = (config?: Partial<DetectionEngineConfig>) => DetectionEngine;

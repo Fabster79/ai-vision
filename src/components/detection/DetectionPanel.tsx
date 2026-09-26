@@ -12,6 +12,11 @@ type DetectionPanelProps = {
   onAnalyze: () => void;
   onRetry: () => void;
   onClear: () => void;
+  isLive: boolean;
+  batterySaver: boolean;
+  lastUpdated: Date | null;
+  performanceMetrics: { inferenceMs: number; analysisFps: number; objectCount: number } | null;
+  onToggleBatterySaver: () => void;
 };
 
 export function DetectionPanel(props: DetectionPanelProps) {
@@ -41,6 +46,30 @@ export function DetectionPanel(props: DetectionPanelProps) {
           </button>
         )}
       </div>
+      <div className="live-options">
+        <label>
+          <input
+            type="checkbox"
+            checked={props.batterySaver}
+            onChange={props.onToggleBatterySaver}
+            disabled={props.isLive}
+          />
+          Batteriesparmodus (1 Analyse/Sek.)
+        </label>
+        {props.isLive && <span className="live-indicator">● Live-Erkennung aktiv</span>}
+      </div>
+      {props.lastUpdated && (
+        <p className="result-timestamp">
+          Letzte gültige Analyse: {props.lastUpdated.toLocaleTimeString('de-DE')}
+        </p>
+      )}
+      {import.meta.env.DEV && props.performanceMetrics && (
+        <output className="performance-profile" aria-label="Performance-Profil">
+          {Math.round(props.performanceMetrics.inferenceMs)} ms ·{' '}
+          {props.performanceMetrics.analysisFps.toFixed(1)} FPS ·{' '}
+          {props.performanceMetrics.objectCount} Objekte
+        </output>
+      )}
       {props.detections.length > 0 && (
         <div className="detection-summary">
           <span>{props.detections.length} Objekte erkannt</span>
