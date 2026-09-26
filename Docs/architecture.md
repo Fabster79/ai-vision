@@ -50,8 +50,6 @@ M0 liefert bewusst nur das bedienbare, responsive Grundgerüst. Der deaktivierte
 | --------------------------------------------------------- | --------- |
 | Konkrete MediaPipe- und Modellversion samt Lizenznachweis | M2        |
 | Grenzwerte und Palette der Farbanalyse                    | M4        |
-| PWA-Cache-Strategie für Modell und WASM                   | M6        |
-| Statischer Hosting-Anbieter                               | M6        |
 
 ## M1 – Kamera-Fundament (26. September 2026)
 
@@ -66,3 +64,24 @@ Die Kamera startet ausschließlich nach einer Nutzeraktion. Der Hook `useCamera`
 **Status:** angenommen
 
 Auf Geräten mit grobem Zeiger wird zunächst `facingMode: environment` angefordert und beim Wechsel zwischen Rück- und Frontkamera umgeschaltet. Desktop verwendet nach der Freigabe die ermittelten `deviceId`s. Breite und Höhe sind mit 1280 × 720 nur Idealwerte, damit der Browser eine passende Kameraauflösung wählen kann.
+
+## M6 – PWA und Veröffentlichung (26. September 2026)
+
+### Entscheidung 008: Generierter Service Worker ohne Build-Plugin
+
+**Status:** angenommen
+
+Ein kleines Build-Skript erzeugt nach dem Vite-Build einen versionsgebundenen Service Worker und
+nimmt alle lokalen Produktionsdateien in den Precache auf. Große Vision-Ressourcen (`mjs`, `wasm`,
+`tflite`) werden Cache-first gespeichert, sobald sie erstmals benötigt werden. Dadurch kostet die
+App-Hülle keinen weiteren Runtime-Download und das Modell wird nicht ungefragt vor der ersten
+Analyse geladen. Es werden keine Kamera- oder Ergebnisdaten im Cache abgelegt.
+
+### Entscheidung 009: GitHub Pages als statisches Hosting
+
+**Status:** angenommen
+
+GitHub Pages stellt die App per HTTPS bereit. Ein separater Actions-Workflow führt vor dem
+Deployment die Qualitätsprüfungen aus und veröffentlicht ausschließlich `dist/`. Vite ermittelt im
+CI-Build den Projekt-Unterpfad aus `GITHUB_REPOSITORY`; lokale Entwicklung und Domain-Hosting
+bleiben unter `/` nutzbar.

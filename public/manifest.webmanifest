@@ -1,0 +1,19 @@
+{
+  "name": "PocketVision",
+  "short_name": "PocketVision",
+  "description": "Private Objekt- und Farberkennung direkt im Browser",
+  "lang": "de",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#07130f",
+  "theme_color": "#07130f",
+  "icons": [
+    {
+      "src": "icons/pocketvision.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
