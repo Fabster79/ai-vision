@@ -47,6 +47,7 @@ describe('App', () => {
       '[PocketVision] KI-Modell konnte nicht geladen werden.',
       expect.anything(),
     );
+    expect(consoleError).toHaveBeenCalledTimes(1);
   });
 
   it('communicates privacy before camera access and only starts after a tap', async () => {

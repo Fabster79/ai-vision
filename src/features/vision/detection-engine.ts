@@ -12,9 +12,11 @@ export type DetectionEngineConfig = {
 export const defaultDetectionConfig: DetectionEngineConfig = {
   scoreThreshold: 0.5,
   maxResults: 5,
-  moduleAssetPath: '/mediapipe/vision_bundle.mjs',
-  modelAssetPath: '/models/efficientdet_lite0.tflite',
-  wasmAssetPath: '/mediapipe/wasm',
+  moduleAssetPath:
+    'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22-rc.20250304/vision_bundle.mjs',
+  modelAssetPath:
+    'https://storage.googleapis.com/mediapipe-models/object_detector/efficientdet_lite0/int8/1/efficientdet_lite0.tflite',
+  wasmAssetPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22-rc.20250304/wasm',
 };
 
 export type DetectionEngineFactory = (config?: Partial<DetectionEngineConfig>) => DetectionEngine;

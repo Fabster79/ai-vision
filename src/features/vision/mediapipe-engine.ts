@@ -92,8 +92,7 @@ export class MediapipeDetectionEngine implements DetectionEngine {
   }
 
   private async createDetector() {
-    // The runtime bundle is a local public asset. Keeping this import dynamic lets the
-    // camera UI start even when vision assets have not been provisioned yet.
+    // MediaPipe remains lazy so a network/model failure never blocks the camera UI.
     const vision = (await import(
       /* @vite-ignore */ this.config.moduleAssetPath
     )) as MediaPipeModule;

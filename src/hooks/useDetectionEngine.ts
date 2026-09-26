@@ -18,6 +18,7 @@ function getSharedEngine(factory: DetectionEngineFactory) {
 
 export function useDetectionEngine(factory: DetectionEngineFactory = createDefaultEngine) {
   const engineRef = useRef(getSharedEngine(factory));
+  const initialLoadStartedRef = useRef(false);
   const [status, setStatus] = useState<DetectionEngineStatus>('loading');
   const [message, setMessage] = useState('KI-Modell wird geladen …');
   const [detections, setDetections] = useState<Detection[]>([]);
@@ -38,6 +39,10 @@ export function useDetectionEngine(factory: DetectionEngineFactory = createDefau
   }, []);
 
   useEffect(() => {
+    // React StrictMode runs effects twice in development. Do not start a second
+    // observer for the same load promise or report the same failure twice.
+    if (initialLoadStartedRef.current) return;
+    initialLoadStartedRef.current = true;
     void load();
   }, [load]);
 

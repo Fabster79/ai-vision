@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { MediapipeDetectionEngine, normalizeDetections } from './mediapipe-engine';
+import { defaultDetectionConfig } from './detection-engine';
 
 const raw = (label: string, score: number) => ({
   categories: [{ categoryName: label, score }],
@@ -29,6 +30,14 @@ describe('normalizeDetections', () => {
 });
 
 describe('MediapipeDetectionEngine configuration', () => {
+  it('uses version-pinned HTTPS assets by default', () => {
+    expect(defaultDetectionConfig.moduleAssetPath).toMatch(
+      /^https:\/\/cdn\.jsdelivr\.net\/npm\/@mediapipe\/tasks-vision@0\.10\.22-rc\.20250304\//,
+    );
+    expect(defaultDetectionConfig.wasmAssetPath).toContain('@0.10.22-rc.20250304/wasm');
+    expect(defaultDetectionConfig.modelAssetPath).toMatch(/^https:\/\/storage\.googleapis\.com\//);
+  });
+
   it('rejects invalid thresholds and result limits', () => {
     expect(() => new MediapipeDetectionEngine({ scoreThreshold: 1.1 })).toThrow(RangeError);
     expect(() => new MediapipeDetectionEngine({ maxResults: 0 })).toThrow(RangeError);
