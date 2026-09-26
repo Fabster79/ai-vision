@@ -52,7 +52,7 @@ export function useDetectionEngine(factory: DetectionEngineFactory = createDefau
       setIsDetecting(true);
       try {
         const nextDetections = await engineRef.current.detect(video, performance.now());
-        setDetections(nextDetections);
+        setDetections([...nextDetections].sort((a, b) => b.score - a.score));
       } catch (error) {
         console.error('[PocketVision] Einzelanalyse fehlgeschlagen.', error);
         setStatus('error');
@@ -64,5 +64,7 @@ export function useDetectionEngine(factory: DetectionEngineFactory = createDefau
     [isDetecting],
   );
 
-  return { status, message, detections, isDetecting, analyze, retry: load };
+  const clear = useCallback(() => setDetections([]), []);
+
+  return { status, message, detections, isDetecting, analyze, retry: load, clear };
 }
