@@ -125,6 +125,46 @@ button {
   margin: 8px 0 0;
   font-size: clamp(22px, 6vw, 30px);
 }
+.live-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+  color: #a9bdb2;
+  font-size: 12px;
+}
+.live-options label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  cursor: pointer;
+}
+.live-options input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--mint);
+}
+.live-indicator {
+  color: var(--mint);
+  font-weight: 700;
+}
+.result-timestamp {
+  margin: 4px 0 0;
+  color: #71887d;
+  font-size: 11px;
+}
+.performance-profile {
+  display: block;
+  margin-top: 10px;
+  padding: 7px 9px;
+  border-radius: 8px;
+  color: #b9d8c8;
+  background: rgba(0, 0, 0, 0.22);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+}
 .ai-status {
   display: inline-flex;
   align-items: center;
@@ -547,6 +587,11 @@ h1 em {
 .control-button--stop {
   color: #ffc5b7;
   border-color: rgba(255, 152, 127, 0.3);
+}
+.control-button--live {
+  color: #092016;
+  border-color: var(--mint);
+  background: var(--mint);
 }
 .privacy-note {
   display: flex;

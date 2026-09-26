@@ -63,8 +63,19 @@ export function App() {
               status={camera.status}
               canSwitch={camera.canSwitch}
               onStart={() => void camera.start()}
-              onStop={() => camera.stop('Kamera wurde gestoppt.')}
-              onSwitch={() => void camera.switchCamera()}
+              onStop={() => {
+                detection.stopLive();
+                camera.stop('Kamera wurde gestoppt.');
+              }}
+              onSwitch={() => {
+                detection.stopLive();
+                void camera.switchCamera();
+              }}
+              liveActive={detection.isLive}
+              liveAvailable={detection.status === 'ready'}
+              onToggleLive={() =>
+                detection.isLive ? detection.stopLive() : detection.startLive(video)
+              }
             />
             <p className="privacy-note">
               <LockClosedIcon /> Kameraaufnahmen werden weder hochgeladen noch gespeichert.
@@ -80,6 +91,11 @@ export function App() {
             onAnalyze={() => void detection.analyze(video)}
             onRetry={() => void detection.retry()}
             onClear={detection.clear}
+            isLive={detection.isLive}
+            batterySaver={detection.batterySaver}
+            lastUpdated={detection.lastUpdated}
+            performanceMetrics={detection.performanceMetrics}
+            onToggleBatterySaver={detection.toggleBatterySaver}
           />
         </div>
       </section>

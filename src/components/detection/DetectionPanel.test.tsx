@@ -25,6 +25,11 @@ it('shows detection details and clears results on request', () => {
       onAnalyze={vi.fn()}
       onRetry={vi.fn()}
       onClear={onClear}
+      isLive={false}
+      batterySaver
+      lastUpdated={new Date('2026-09-26T12:34:56Z')}
+      performanceMetrics={null}
+      onToggleBatterySaver={vi.fn()}
     />,
   );
 

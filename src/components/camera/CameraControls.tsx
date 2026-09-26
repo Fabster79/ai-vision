@@ -8,6 +8,9 @@ type CameraControlsProps = {
   onStart: () => void;
   onStop: () => void;
   onSwitch: () => void;
+  liveActive: boolean;
+  liveAvailable: boolean;
+  onToggleLive: () => void;
 };
 
 export function CameraControls({
@@ -16,6 +19,9 @@ export function CameraControls({
   onStart,
   onStop,
   onSwitch,
+  liveActive,
+  liveAvailable,
+  onToggleLive,
 }: CameraControlsProps) {
   const active = status === 'active';
   return (
@@ -26,12 +32,13 @@ export function CameraControls({
             <LoopIcon /> <span>Wechseln</span>
           </button>
           <button
-            className="control-button"
+            className={`control-button ${liveActive ? 'control-button--live' : ''}`}
             type="button"
-            disabled
-            title="Verfügbar mit Objekterkennung"
+            disabled={!liveAvailable}
+            onClick={onToggleLive}
+            aria-pressed={liveActive}
           >
-            <VideoIcon /> <span>Live</span>
+            <VideoIcon /> <span>{liveActive ? 'Live stoppen' : 'Live starten'}</span>
           </button>
           <button className="control-button control-button--stop" type="button" onClick={onStop}>
             <StopIcon /> <span>Stoppen</span>

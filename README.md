@@ -60,9 +60,23 @@ Automatisierte Browser-Emulation ergänzt die Tests auf echten Geräten, ersetzt
 - **M2 – Objekterkennung:** umgesetzt
 - **M3 – Overlay und Ergebnisliste:** umgesetzt
 - **M4 – Farb-Analyse:** umgesetzt
-- M5–M6: geplant
+- **M5 – Kontinuierliche Erkennung und Performance:** umgesetzt
+- M6: geplant
 
 Der vollständige, verbindliche Ablauf steht im [Codex-Projektplan](Docs/ai-vision-object-detection-codex-plan.md).
+
+## Live-Erkennung und Leistungsprofil
+
+Der Live-Modus plant Frames bevorzugt mit `requestVideoFrameCallback` und nutzt
+`requestAnimationFrame` als Browser-Fallback. Eine neue Analyse beginnt immer erst, nachdem die
+vorherige abgeschlossen wurde. Im standardmäßig aktivierten Batteriesparmodus läuft höchstens eine
+Analyse pro Sekunde; ohne Batteriesparmodus sind es mobil bis zu drei und auf größeren Ansichten bis
+zu fünf. Beim Ausblenden des Tabs pausiert die Planung automatisch und wird erst im sichtbaren Tab
+fortgesetzt. Kamera-Stopp, Kamerawechsel und das Verlassen der Ansicht beenden die Schleife.
+
+In der Entwicklungsumgebung zeigt der Ergebnisbereich Inferenzdauer, tatsächliche Analyse-FPS und
+Objektzahl. Diese Profiling-Anzeige wird im Produktionsbuild nicht ausgegeben. Die letzte gültige
+Erkennung bleibt während der Drosselung sichtbar und trägt einen Zeitstempel.
 
 ## Erkennungsgrenzen
 
