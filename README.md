@@ -1,6 +1,6 @@
 # PocketVision
 
-Mobile-first Webanwendung für lokale Objekt- und Farberkennung über die Gerätekamera. Das Projekt befindet sich nach **M0** in der technischen Grundphase; Kamerazugriff und Erkennung folgen in den nächsten Meilensteinen.
+Mobile-first Webanwendung für lokale Objekt- und Farberkennung über die Gerätekamera. Das **M1-Kamera-Fundament** ist umgesetzt; Objekterkennung folgt im nächsten Meilenstein.
 
 ## Datenschutz
 
@@ -10,7 +10,7 @@ Die geplante Bildanalyse läuft vollständig im Browser. Kamera-Frames werden ni
 
 - Node.js 20.19 oder neuer
 - npm 10 oder neuer
-- Für den späteren Kamerazugriff: `localhost` oder eine HTTPS-Verbindung
+- Für den Kamerazugriff: `localhost` oder eine HTTPS-Verbindung und eine erteilte Browser-Berechtigung
 
 ## Lokale Entwicklung
 
@@ -56,7 +56,8 @@ Automatisierte Browser-Emulation ergänzt die Tests auf echten Geräten, ersetzt
 ## Projektstatus
 
 - **M0 – Technische Basis:** umgesetzt
-- **M1 – Kamera-Fundament:** als Nächstes
-- M2–M6: geplant
+- **M1 – Kamera-Fundament:** umgesetzt
+- **M2 – Objekterkennung:** als Nächstes
+- M3–M6: geplant
 
 Der vollständige, verbindliche Ablauf steht im [Codex-Projektplan](Docs/ai-vision-object-detection-codex-plan.md).

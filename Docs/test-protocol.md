@@ -22,3 +22,20 @@
 ### Reale Geräte
 
 Ein echter Kamera-Test ist für M0 nicht anwendbar. Ab M1 sind mindestens ein aktuelles Android-Gerät mit Chrome und ein aktuelles iPhone mit Safari verpflichtend. Emulatoren sind nur ergänzend.
+
+## M1 – Kamera-Fundament
+
+### Automatisiert
+
+- Kamera startet erst nach expliziter Nutzeraktion.
+- Mobile Constraints bevorzugen die Rückkamera und erzwingen keine Auflösung.
+- Stop beendet alle Tracks; verweigerte Berechtigung zeigt einen verständlichen Hilfetext.
+- Playwright prüft die aktive Startaktion und horizontalen Overflow.
+
+### Manuell auf realen Geräten
+
+- [ ] Android Chrome: Freigabe, Start, Stop, Front-/Rückkamera und Kamera-Leuchte prüfen.
+- [ ] iOS Safari: `playsInline`, Freigabe, Start, Stop, Front-/Rückkamera und Home-Indikator prüfen.
+- [ ] Hoch-/Querformat: Preview und Controls layouten ohne Neustart neu.
+- [ ] Tab ausblenden und zurückkehren: Stream endet und bleibt bis zum erneuten Tippen aus.
+- [ ] Berechtigung verweigern: Hilfetext verweist auf Browser-Einstellungen.

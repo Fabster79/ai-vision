@@ -52,3 +52,17 @@ M0 liefert bewusst nur das bedienbare, responsive Grundgerüst. Der deaktivierte
 | Grenzwerte und Palette der Farbanalyse                    | M4        |
 | PWA-Cache-Strategie für Modell und WASM                   | M6        |
 | Statischer Hosting-Anbieter                               | M6        |
+
+## M1 – Kamera-Fundament (26. September 2026)
+
+### Entscheidung 006: Expliziter, defensiver Kamera-Lifecycle
+
+**Status:** angenommen
+
+Die Kamera startet ausschließlich nach einer Nutzeraktion. Der Hook `useCamera` kapselt Stream, Zustände, Geräteauswahl und Fehlerübersetzung. Jeder Wechsel stoppt zuerst den bestehenden Stream; auch Stop, Komponentenabbau, `pagehide` und das Ausblenden des Tabs beenden alle Tracks. Ein ausgeblendeter Tab startet die Kamera aus Datenschutzgründen nicht automatisch neu.
+
+### Entscheidung 007: Mobile Facing-Mode, Desktop Device-ID
+
+**Status:** angenommen
+
+Auf Geräten mit grobem Zeiger wird zunächst `facingMode: environment` angefordert und beim Wechsel zwischen Rück- und Frontkamera umgeschaltet. Desktop verwendet nach der Freigabe die ermittelten `deviceId`s. Breite und Höhe sind mit 1280 × 720 nur Idealwerte, damit der Browser eine passende Kameraauflösung wählen kann.
