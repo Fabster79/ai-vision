@@ -30,6 +30,17 @@ describe('normalizeDetections', () => {
 });
 
 describe('MediapipeDetectionEngine configuration', () => {
+  it('keeps smaller secondary objects above a moderate default threshold', () => {
+    expect(defaultDetectionConfig.scoreThreshold).toBe(0.35);
+    expect(defaultDetectionConfig.maxResults).toBe(8);
+
+    const result = normalizeDetections([raw('person', 0.74), raw('book', 0.41)], {
+      scoreThreshold: defaultDetectionConfig.scoreThreshold,
+      maxResults: defaultDetectionConfig.maxResults,
+    });
+    expect(result.map(({ label }) => label)).toEqual(['person', 'book']);
+  });
+
   it('uses version-pinned HTTPS assets by default', () => {
     expect(defaultDetectionConfig.moduleAssetPath).toMatch(
       /^https:\/\/cdn\.jsdelivr\.net\/npm\/@mediapipe\/tasks-vision@0\.10\.22-rc\.20250304\//,

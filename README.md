@@ -1,6 +1,6 @@
 # PocketVision
 
-Mobile-first Webanwendung für lokale Objekt- und Farberkennung über die Gerätekamera. Das **M1-Kamera-Fundament** ist umgesetzt; Objekterkennung folgt im nächsten Meilenstein.
+Mobile-first Webanwendung für lokale Objekt- und Farberkennung über die Gerätekamera. Objektboxen und eine robuste Schätzung der Hauptfarbe werden vollständig lokal ermittelt.
 
 ## Datenschutz
 
@@ -57,7 +57,23 @@ Automatisierte Browser-Emulation ergänzt die Tests auf echten Geräten, ersetzt
 
 - **M0 – Technische Basis:** umgesetzt
 - **M1 – Kamera-Fundament:** umgesetzt
-- **M2 – Objekterkennung:** als Nächstes
-- M3–M6: geplant
+- **M2 – Objekterkennung:** umgesetzt
+- **M3 – Overlay und Ergebnisliste:** umgesetzt
+- **M4 – Farb-Analyse:** umgesetzt
+- M5–M6: geplant
 
 Der vollständige, verbindliche Ablauf steht im [Codex-Projektplan](Docs/ai-vision-object-detection-codex-plan.md).
+
+## Erkennungsgrenzen
+
+Das verwendete EfficientDet-Lite0-Modell kennt die COCO-Klasse `book`. Kleinere Objekte erhalten
+jedoch häufig eine niedrigere Konfidenz als große, bildfüllende Objekte wie eine Person. Der
+Standard-Schwellwert ist deshalb auf einen moderaten Wert von `0.35` eingestellt und es werden bis
+zu acht Ergebnisse berücksichtigt. Das verbessert beispielsweise die Chance, ein deutlich vor die
+Kamera gehaltenes Buch zusätzlich zur Person zu erkennen, kann aber gelegentlich auch eine falsche
+Erkennung anzeigen.
+
+Ein niedrigerer Schwellwert kann keine Erkennung erzwingen: Perspektive, Beleuchtung, Verdeckung und
+die Grenzen des vortrainierten Modells bleiben maßgeblich. Ein Modellwechsel oder objektspezifisches
+Training ist dafür nicht Teil von M4; das sollte erst nach Messungen mit mehreren repräsentativen
+Testmotiven als eigener Qualitätsschritt bewertet werden.

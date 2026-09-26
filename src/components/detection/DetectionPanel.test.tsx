@@ -9,7 +9,7 @@ const detections: Detection[] = [
     label: 'person',
     score: 0.91,
     boundingBox: { x: 10, y: 10, width: 100, height: 200 },
-    color: { hex: '#000000', displayName: 'Noch nicht analysiert', confidence: 'low' },
+    color: { hex: '#d22f2f', displayName: 'Rot', confidence: 'high' },
   },
 ];
 
@@ -30,6 +30,8 @@ it('shows detection details and clears results on request', () => {
 
   expect(screen.getByText('person')).toBeInTheDocument();
   expect(screen.getByText('91 %')).toBeInTheDocument();
+  expect(screen.getByText('Geschätzte Hauptfarbe: Rot')).toBeInTheDocument();
+  expect(screen.getByText('#D22F2F · Sicherheit hoch')).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: /Ergebnisse löschen/i }));
   expect(onClear).toHaveBeenCalledOnce();
 });

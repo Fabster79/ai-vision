@@ -16,6 +16,7 @@ type DetectionPanelProps = {
 
 export function DetectionPanel(props: DetectionPanelProps) {
   const canAnalyze = props.status === 'ready' && props.cameraActive && !props.isDetecting;
+  const confidenceLabels = { high: 'hoch', medium: 'mittel', low: 'niedrig' } as const;
   return (
     <section className="detection-panel" aria-labelledby="detection-title">
       <div className="detection-heading">
@@ -61,9 +62,23 @@ export function DetectionPanel(props: DetectionPanelProps) {
               </span>
               <div>
                 <strong>{detection.label}</strong>
-                <small>Konfidenz</small>
+                <small>Objekt-Konfidenz</small>
               </div>
               <span className="detection-score">{Math.round(detection.score * 100)} %</span>
+              <div className="detection-color">
+                <span
+                  className="color-swatch"
+                  style={{ backgroundColor: detection.color.hex }}
+                  aria-hidden="true"
+                />
+                <span>
+                  <b>Geschätzte Hauptfarbe: {detection.color.displayName}</b>
+                  <small>
+                    {detection.color.hex.toUpperCase()} · Sicherheit{' '}
+                    {confidenceLabels[detection.color.confidence]}
+                  </small>
+                </span>
+              </div>
             </li>
           ))}
         </ol>
