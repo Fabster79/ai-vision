@@ -1,3 +1,5 @@
+import { FilesetResolver, ObjectDetector } from '@mediapipe/tasks-vision';
+
 import { defaultDetectionConfig, type DetectionEngineConfig } from './detection-engine';
 import type { Detection, DetectionEngine } from './detection-types';
 
@@ -9,16 +11,6 @@ type RawDetection = {
 type MediaPipeDetector = {
   detectForVideo(video: HTMLVideoElement, timestampMs: number): { detections?: RawDetection[] };
   close(): void;
-};
-
-type MediaPipeModule = {
-  FilesetResolver: { forVisionTasks(path: string): Promise<unknown> };
-  ObjectDetector: {
-    createFromOptions(
-      fileset: unknown,
-      options: Record<string, unknown>,
-    ): Promise<MediaPipeDetector>;
-  };
 };
 
 const emptyColor: Detection['color'] = {
@@ -69,11 +61,6 @@ export function normalizeDetections(
     .slice(0, config.maxResults);
 }
 
-async function loadMediaPipe(): Promise<MediaPipeModule> {
-  const packageName = '@mediapipe/tasks-vision';
-  return import(/* @vite-ignore */ packageName) as Promise<MediaPipeModule>;
-}
-
 export class MediapipeDetectionEngine implements DetectionEngine {
   private readonly config: DetectionEngineConfig;
   private detector: MediaPipeDetector | null = null;
@@ -100,15 +87,14 @@ export class MediapipeDetectionEngine implements DetectionEngine {
   }
 
   private async createDetector() {
-    const vision = await loadMediaPipe();
-    const fileset = await vision.FilesetResolver.forVisionTasks(this.config.wasmAssetPath);
-    this.detector = await vision.ObjectDetector.createFromOptions(fileset, {
+    const fileset = await FilesetResolver.forVisionTasks(this.config.wasmAssetPath);
+    this.detector = (await ObjectDetector.createFromOptions(fileset, {
       baseOptions: { modelAssetPath: this.config.modelAssetPath },
       runningMode: 'VIDEO',
       scoreThreshold: this.config.scoreThreshold,
       maxResults: this.config.maxResults,
       categoryAllowlist: this.config.labelAllowlist ? [...this.config.labelAllowlist] : undefined,
-    });
+    })) as MediaPipeDetector;
   }
 
   async detect(video: HTMLVideoElement, timestampMs: number): Promise<Detection[]> {
