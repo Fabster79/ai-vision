@@ -49,36 +49,40 @@ export function App() {
           </div>
         </div>
 
-        <div className="camera-panel">
-          <CameraStage
-            stream={camera.stream}
-            status={camera.status}
-            message={camera.message}
-            facingMode={camera.facingMode}
-            onVideoElement={setVideo}
+        <div className="camera-output">
+          <div className="camera-panel">
+            <CameraStage
+              stream={camera.stream}
+              status={camera.status}
+              message={camera.message}
+              facingMode={camera.facingMode}
+              detections={detection.detections}
+              onVideoElement={setVideo}
+            />
+            <CameraControls
+              status={camera.status}
+              canSwitch={camera.canSwitch}
+              onStart={() => void camera.start()}
+              onStop={() => camera.stop('Kamera wurde gestoppt.')}
+              onSwitch={() => void camera.switchCamera()}
+            />
+            <p className="privacy-note">
+              <LockClosedIcon /> Kameraaufnahmen werden weder hochgeladen noch gespeichert.
+            </p>
+          </div>
+
+          <DetectionPanel
+            status={detection.status}
+            message={detection.message}
+            cameraActive={camera.status === 'active'}
+            isDetecting={detection.isDetecting}
+            detections={detection.detections}
+            onAnalyze={() => void detection.analyze(video)}
+            onRetry={() => void detection.retry()}
+            onClear={detection.clear}
           />
-          <CameraControls
-            status={camera.status}
-            canSwitch={camera.canSwitch}
-            onStart={() => void camera.start()}
-            onStop={() => camera.stop('Kamera wurde gestoppt.')}
-            onSwitch={() => void camera.switchCamera()}
-          />
-          <p className="privacy-note">
-            <LockClosedIcon /> Kameraaufnahmen werden weder hochgeladen noch gespeichert.
-          </p>
         </div>
       </section>
-
-      <DetectionPanel
-        status={detection.status}
-        message={detection.message}
-        cameraActive={camera.status === 'active'}
-        isDetecting={detection.isDetecting}
-        detections={detection.detections}
-        onAnalyze={() => void detection.analyze(video)}
-        onRetry={() => void detection.retry()}
-      />
 
       <section className="camera-facts" aria-label="Hinweise zur Kamera">
         <article>

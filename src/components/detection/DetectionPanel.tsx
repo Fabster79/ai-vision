@@ -1,4 +1,4 @@
-import { MagnifyingGlassIcon, ReloadIcon } from '@radix-ui/react-icons';
+import { Cross2Icon, MagnifyingGlassIcon, ReloadIcon } from '@radix-ui/react-icons';
 
 import type { DetectionEngineStatus } from '../../hooks/useDetectionEngine';
 import type { Detection } from '../../features/vision/detection-types';
@@ -11,6 +11,7 @@ type DetectionPanelProps = {
   detections: Detection[];
   onAnalyze: () => void;
   onRetry: () => void;
+  onClear: () => void;
 };
 
 export function DetectionPanel(props: DetectionPanelProps) {
@@ -39,16 +40,30 @@ export function DetectionPanel(props: DetectionPanelProps) {
           </button>
         )}
       </div>
+      {props.detections.length > 0 && (
+        <div className="detection-summary">
+          <span>{props.detections.length} Objekte erkannt</span>
+          <button type="button" onClick={props.onClear}>
+            <Cross2Icon /> Ergebnisse löschen
+          </button>
+        </div>
+      )}
       {props.detections.length === 0 ? (
         <p className="empty-detections">
           {props.cameraActive ? 'Noch keine Objekte analysiert.' : 'Starte zuerst die Kamera.'}
         </p>
       ) : (
         <ol className="detection-list">
-          {props.detections.map((detection) => (
+          {props.detections.map((detection, index) => (
             <li key={detection.id}>
-              <strong>{detection.label}</strong>
-              <span>{Math.round(detection.score * 100)} %</span>
+              <span className="detection-rank" aria-hidden="true">
+                {index + 1}
+              </span>
+              <div>
+                <strong>{detection.label}</strong>
+                <small>Konfidenz</small>
+              </div>
+              <span className="detection-score">{Math.round(detection.score * 100)} %</span>
             </li>
           ))}
         </ol>

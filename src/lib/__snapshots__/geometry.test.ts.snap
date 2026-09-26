@@ -1,0 +1,28 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`projectCoverBox > snapshots 4:3 with horizontal cropping geometry 1`] = `
+{
+  "height": 200,
+  "width": 355.55555555555554,
+  "x": 44.4444444444444,
+  "y": 100,
+}
+`;
+
+exports[`projectCoverBox > snapshots 16:9 without cropping geometry 1`] = `
+{
+  "height": 180,
+  "width": 320,
+  "x": 160,
+  "y": 90,
+}
+`;
+
+exports[`projectCoverBox > snapshots smartphone portrait with horizontal cropping geometry 1`] = `
+{
+  "height": 213.33333333333331,
+  "width": 379.25925925925924,
+  "x": -199.2592592592593,
+  "y": 106.66666666666666,
+}
+`;
