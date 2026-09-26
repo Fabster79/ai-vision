@@ -63,3 +63,17 @@ Automatisierte Browser-Emulation ergänzt die Tests auf echten Geräten, ersetzt
 - M5–M6: geplant
 
 Der vollständige, verbindliche Ablauf steht im [Codex-Projektplan](Docs/ai-vision-object-detection-codex-plan.md).
+
+## Erkennungsgrenzen
+
+Das verwendete EfficientDet-Lite0-Modell kennt die COCO-Klasse `book`. Kleinere Objekte erhalten
+jedoch häufig eine niedrigere Konfidenz als große, bildfüllende Objekte wie eine Person. Der
+Standard-Schwellwert ist deshalb auf einen moderaten Wert von `0.35` eingestellt und es werden bis
+zu acht Ergebnisse berücksichtigt. Das verbessert beispielsweise die Chance, ein deutlich vor die
+Kamera gehaltenes Buch zusätzlich zur Person zu erkennen, kann aber gelegentlich auch eine falsche
+Erkennung anzeigen.
+
+Ein niedrigerer Schwellwert kann keine Erkennung erzwingen: Perspektive, Beleuchtung, Verdeckung und
+die Grenzen des vortrainierten Modells bleiben maßgeblich. Ein Modellwechsel oder objektspezifisches
+Training ist dafür nicht Teil von M4; das sollte erst nach Messungen mit mehreren repräsentativen
+Testmotiven als eigener Qualitätsschritt bewertet werden.

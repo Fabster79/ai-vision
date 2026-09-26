@@ -10,8 +10,11 @@ export type DetectionEngineConfig = {
 };
 
 export const defaultDetectionConfig: DetectionEngineConfig = {
-  scoreThreshold: 0.5,
-  maxResults: 5,
+  // EfficientDet often scores smaller COCO objects (for example a book held
+  // in front of a person) below 0.5. This deliberately moderate threshold
+  // keeps those candidates without making very weak guesses visible.
+  scoreThreshold: 0.35,
+  maxResults: 8,
   moduleAssetPath:
     'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22-rc.20250304/vision_bundle.mjs',
   modelAssetPath:
